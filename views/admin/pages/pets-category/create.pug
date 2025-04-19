@@ -1,0 +1,40 @@
+extends ../../layout/default.pug
+
+block main
+  .container.mt-4
+    h1.mb-4 Thêm Danh Mục Thú Cưng
+
+    form(method="POST" action=`${prefixAdmin}/pets-category/create` enctype="multipart/form-data")
+      .mb-3
+        label.form-label(for="title") Tên danh mục
+        input.form-control(type="text" name="title" id="title" required)
+
+      .mb-3
+        label.form-label(for="parent_id") Danh mục cha
+        select.form-select(name="parent_id" id="parent_id")
+          option(value="") -- Không có --
+          //- Thêm danh mục cha động ở đây nếu có
+          option(value="123") Danh mục cha mẫu
+
+      .mb-3
+      div( class="form-group" upload-image)
+        label.form-label(for="image") Ảnh sản phẩm (URL):
+        input.form-control(type="file" name="image" accept="image/*" upload-image-input)
+        img(src="", alt="" upload-image-preview style=" width: 150px; margin-top: 10px;")
+        button.btn.btn-danger.mt-2(type="button" upload-image-remove) Xóa ảnh
+
+      .mb-3
+        label.form-label(for="description") Mô tả
+        textarea.form-control(name="description" id="description" rows="3")
+
+      .mb-3
+        label.form-label(for="status") Trạng thái
+        select.form-select(name="status" id="status")
+          option(value="active" selected) Hoạt động 
+          option(value="inactive") Không hoạt động 
+
+      .mb-3
+        label.form-label(for="position") Vị trí
+        input.form-control(type="number" name="position" id="position" min="0")
+
+      button.btn.btn-primary(type="submit") Thêm mới

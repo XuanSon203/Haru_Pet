@@ -1,0 +1,30 @@
+mixin filter()
+  form.d-flex.align-items-end.gap-3(method="GET" action=`${prefixAdmin}/pets` sort)
+    // Trạng thái
+    div
+      label.form-label(for="status") Trạng thái
+      select.form-select(name="status" id="status" sort-select)
+        option(value="") -- Tất cả --
+        option(value="active") Đang bán
+        option(value="inactive") Không bán
+
+    // Giới tính
+    div
+      label.form-label(for="sex") Giới tính
+      select.form-select(name="sex" id="sex")
+        option(value="") -- Tất cả --
+        option(value="Đực") Đực
+        option(value="Cái") Cái
+
+    // Sắp xếp
+    div
+      label.form-label(for="sort") Sắp xếp
+      select.form-select(name="sort" id="sort" sort-select)
+        option(value="") -- Không sắp xếp --
+        option(value="price-asc") Giá tăng dần
+        option(value="price-desc") Giá giảm dần
+        option(value="position-asc") Vị trí tăng dần
+        option(value="position-desc") Vị trí giảm dần
+
+    button.btn.btn-outline-success(type="submit") Lọc
+    button.btn.btn-outline-secondary(type="button" sort-clear) Xóa lọc

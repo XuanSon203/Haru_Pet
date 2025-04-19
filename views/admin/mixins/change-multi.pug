@@ -1,0 +1,12 @@
+mixin  change-multi()
+      form.d-flex.align-items-end.gap-2(method="post" action=`${prefixAdmin}/pets/change-multi?_method=PATCH` change-multi)
+        input#input-values(type="hidden" name="ids" value="")
+        label.form-label(for="action") Chọn hành động
+          select.form-select(name="action" id="action" required)
+            option(value="" disabled selected) --Chọn hành động--
+            option(value="edit") Chỉnh sửa
+            option(value="delete") Xóa
+            option(value="change-position") Thay đổi vị trí
+            option(value="active") Kích hoạt
+            option(value="inactive") Vô hiệu hóa
+          button.btn.btn-primary(type="submit") Thực hiện

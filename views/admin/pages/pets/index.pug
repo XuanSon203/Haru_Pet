@@ -1,0 +1,91 @@
+extends ../../layout/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/search.pug
+include ../../mixins/change-multi.pug
+include ../../mixins/filter.pug
+block main
+  +alert-success('5000')
+  +alert-error('5000')
+  .container.mt-5
+    h1.text-center.mb-4 Manager Pets
+    a.btn.btn-success.m-2(href=`${prefixAdmin}/pets/create`) Thêm thú cưng
+    div.d-flex.justify-content-around.align-items-center.flex-wrap.gap-4.w-100.my-4
+
+      //- Form 1: Chọn hành động (bên trái)
+      +change-multi()
+
+      //- Form 2: Tìm kiếm (ở giữa)
+      +search ()
+
+      //- Form 3: Chọn hành động (bên phải)
+      +filter()
+
+    table.table.table-bordered.table-striped.align-middle.text-center(checkbox-multi)
+      thead.table-dark
+        tr
+          th
+            input(type="checkbox", name="check-all" check-all )
+          th STT
+          th Tên
+          th Giới tính
+          th Ngày sinh
+          th Hình ảnh
+          th Trạng thái
+          th Tình trạng sức khỏe
+          th Tuổi
+          th Giá
+          th Vị trí 
+          th Cân nặng
+          th Chiều cao
+          th Màu
+          th Mô tả
+          th Hành động
+      tbody
+      if(pets)
+        each item,index in pets
+          tr
+            td
+              input(type="checkbox", name="check-item" check-item value=item._id)
+            td #{index + 1}
+            td #{item.name}
+            td #{item.sex}
+            td #{item.dateOfBirth.toLocaleDateString('vi-VN')}
+            td
+              img(src= item.image, alt=item.name, width="80")
+            td
+              if item.status == "active"
+                a.btn.btn-primary(href="javascript:" btn-change-status data-status=item.status data-id =item._id) Đang bán
+              else
+                a.btn.btn-danger(href="javascript:" btn-change-status data-status=item.status data-id =item._id)  Không bán
+
+            td #{item.healthStatus}
+            td #{item.age}
+            td #{item.price}
+            td 
+              input(type="number", name="position" value=item.position min="1")
+            td #{item.weight}
+            td #{item.height}
+            td #{item.color}
+            td #{item.description}
+            td
+              a.btn.btn-sm.btn-outline-warning(href=`${prefixAdmin}/pets/edit/${item.id}`) Sửa
+              |  
+              button.btn.btn-sm.btn-outline-danger(btn-delete-item data-id = item.id) Xóa
+      else
+        p
+          | Không có sản phẩm nào. Hãy 
+          a(href=`${prefixAdmin}/pets/create`) bấm vào đây
+          |  để thêm pet.
+    nav(aria-label='Page navigation example')
+      ul.pagination
+        if(pagination.currentPage>1)
+          li.page-item
+            button.page-link(button-pagination=pagination.currentPage-1) Previous
+        - for(let i = 1 ; i <= pagination.totalPage; i++)
+          li(class=`page-item ${pagination.currentPage === i ? "active" : ""}`)
+            button.page-link(button-pagination = i) #{i}
+        if(pagination.currentPage<pagination.totalPage)
+          li.page-item
+            button.page-link(button-pagination=pagination.currentPage+1) Next
+  form(action=`` data-path=`${prefixAdmin}/pets/delete` form-delete-item method="POST")
+  form(action=`` data-path=`${prefixAdmin}/pets/change-status` form-change-status-item method="POST")

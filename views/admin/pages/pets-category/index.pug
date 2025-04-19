@@ -1,0 +1,30 @@
+extends ../../layout/default.pug
+
+block main
+  .container.mt-4
+    h1.mb-4 Danh Mục Thú Cưng
+    a.btn.btn-outline-primary.m-4(href=`${prefixAdmin}/pets-category/create`) Thêm danh mục 
+    table.table.table-bordered.table-hover.align-middle.text-center
+      thead.table-dark
+        tr
+          th Tên danh mục
+          th Danh mục con 
+          th Hình ảnh 
+          th Trạng thái
+          th Mô tả 
+          th Vị trí
+          th Hành động 
+
+      tbody
+        tr
+          td Danh mục 1
+          td Danh mục con 1
+          td 
+            img(src="/uploads/dog.jpg", alt="Hình ảnh", width="80", class="img-thumbnail")
+          td 
+            span.badge.bg-success Đang bán
+          td Đây là mô tả cho danh mục 1
+          td 1
+          td
+            a.btn.btn-sm.btn-warning(href="#") Sửa
+            a.btn.btn-sm.btn-danger.ms-1(href="#") Xoá
