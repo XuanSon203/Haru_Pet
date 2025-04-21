@@ -1,4 +1,5 @@
 extends ../../layout/default.pug
+include ../../mixins/select-tree.pug
 
 block main
   .container.mt-4
@@ -14,7 +15,8 @@ block main
         select.form-select(name="parent_id" id="parent_id")
           option(value="") -- Không có --
           //- Thêm danh mục cha động ở đây nếu có
-          option(value="123") Danh mục cha mẫu
+          if categories
+            +select-tree(categories)
 
       .mb-3
       div( class="form-group" upload-image)

@@ -26,10 +26,8 @@ module.exports.index = async (req, res) => {
       countProducts
     );
     // Filter
-    let filter = {};
     const status = req.query.status;
     const sex = req.query.sex;
-    let sort = req.query.sort;
     if (status) {
       find.status = status;
     }
@@ -37,12 +35,26 @@ module.exports.index = async (req, res) => {
       find.sex = sex;
     }
 
-    if (sort) {
-      const [key, value] = sort.split("-");
-      filter[key] = value === "asc" ? 1 : -1;
+    let sortOption = {};
+    if (req.query.sort) {
+      let [field, direction] = req.query.sort.split("-");
+      // Cho phép sắp xếp theo name hoặc position
+      if (
+        field &&
+        direction &&
+        ["asc", "desc"].includes(direction) &&
+        ["name", "position"].includes(field)
+      ) {
+        sortOption[field] = direction;
+      } else {
+        sortOption = { position: "asc" };
+      }
+    } else {
+      sortOption = { position: "asc" };
     }
+
     const pets = await Pet.find(find)
-      .sort(filter)
+      .sort(sortOption)
       .limit(objectPagination.limitItem)
       .skip(objectPagination.skip);
 
