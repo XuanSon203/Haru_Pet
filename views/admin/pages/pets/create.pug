@@ -4,65 +4,68 @@ include ../../mixins/select-tree.pug
 block main
   +alert-success('5000')
   +alert-error('5000')
-  .container.mt-5
-    h2.mb-4 Thêm thú cưng mới
+  if (role.permissions.includes("products_add"))
+    .container.mt-5
+      h2.mb-4 Thêm thú cưng mới
+    
+      form(method="POST", action=`${prefixAdmin}/pets/create` enctype="multipart/form-data")
+        .mb-3
+          label.form-label Tên
+          input.form-control(type="text", name="name", required)
+        .mb-3
+          label.form-label(for="pet_category_id") Chọn danh mục cha
+          select.form-select(name="pet_category_id", id="pet_category_id")
+            option(value="" disabled) -- Chọn danh mục cha --
+            if categories
+              +select-tree(categories)
+        .mb-3
+          label.form-label Giới tính
+          select.form-select(name="sex")
+            option(value="Đực") Đực
+            option(value="Cái") Cái
 
-    form(method="POST", action=`${prefixAdmin}/pets/create` enctype="multipart/form-data")
-      .mb-3
-        label.form-label Tên
-        input.form-control(type="text", name="name", required)
-      .mb-3
-        label.form-label(for="pet_category_id") Chọn danh mục cha
-        select.form-select(name="pet_category_id", id="pet_category_id")
-          option(value="" disabled) -- Chọn danh mục cha --
-          if categories
-            +select-tree(categories)
-      .mb-3
-        label.form-label Giới tính
-        select.form-select(name="sex")
-          option(value="Đực") Đực
-          option(value="Cái") Cái
+        .mb-3
+          label.form-label Ngày sinh
+          input.form-control(type="date", name="dateOfBirth")
+          <img >
+        .mb-3
+        div( class="form-group" upload-image)
+          label.form-label(for="image") Ảnh sản phẩm (URL):
+          input.form-control(type="file" name="image" accept="image/*" upload-image-input)
+          img(src="", alt="" upload-image-preview style=" width: 150px; margin-top: 10px;")
+          button.btn.btn-danger.mt-2(type="button" upload-image-remove) Xóa ảnh
 
-      .mb-3
-        label.form-label Ngày sinh
-        input.form-control(type="date", name="dateOfBirth")
-        <img >
-      .mb-3
-      div( class="form-group" upload-image)
-        label.form-label(for="image") Ảnh sản phẩm (URL):
-        input.form-control(type="file" name="image" accept="image/*" upload-image-input)
-        img(src="", alt="" upload-image-preview style=" width: 150px; margin-top: 10px;")
-        button.btn.btn-danger.mt-2(type="button" upload-image-remove) Xóa ảnh
+        .mb-3
+          label.form-label Tình trạng sức khỏe
+          input.form-control(type="text", name="healthStatus")
 
-      .mb-3
-        label.form-label Tình trạng sức khỏe
-        input.form-control(type="text", name="healthStatus")
+        .mb-3
+          label.form-label Tuổi
+          input.form-control(type="text", name="age")
 
-      .mb-3
-        label.form-label Tuổi
-        input.form-control(type="text", name="age")
+        .mb-3
+          label.form-label Cân nặng
+          input.form-control(type="text", name="weight")
 
-      .mb-3
-        label.form-label Cân nặng
-        input.form-control(type="text", name="weight")
+        .mb-3
+          label.form-label Chiều cao
+          input.form-control(type="text", name="height")
+        .mb-3
+          label.form-label Giá
+          input.form-control(type="text", name="price")
+        .mb-3
+          label.form-label Giảm giá 
+          input.form-control(type="text", name="discount")
 
-      .mb-3
-        label.form-label Chiều cao
-        input.form-control(type="text", name="height")
-      .mb-3
-        label.form-label Giá
-        input.form-control(type="text", name="price")
-      .mb-3
-        label.form-label Giảm giá 
-        input.form-control(type="text", name="discount")
+        .mb-3
+          label.form-label Màu
+          input.form-control(type="text", name="color")
 
-      .mb-3
-        label.form-label Màu
-        input.form-control(type="text", name="color")
+        .mb-3
+          label.form-label Mô tả
+          textarea.form-control(name="description")
 
-      .mb-3
-        label.form-label Mô tả
-        textarea.form-control(name="description")
-
-      button.btn.btn-primary(type="submit") Thêm mới
-      a.btn.btn-secondary.ms-2(href="/admin/pets") Hủy
+        button.btn.btn-primary(type="submit") Thêm mới
+        a.btn.btn-secondary.ms-2(href="/admin/pets") Hủy
+  else
+    p Bạn không có quyền truy cập

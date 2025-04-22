@@ -1,0 +1,39 @@
+extends ../../layout/default.pug
+
+
+block main
+  .container
+    .row
+      .col-md-8.offset-md-2
+        h2 Tài khoản của tôi
+
+        .card
+          .card-body
+            h4 Thông tin cá nhân
+            .row
+              .col-md-6
+                p
+                  img(src=user.avatar, alt="Ảnh đại diện", width="150", height="150", class="img-thumbnail rounded-circle d-block mx-auto")
+              
+              .col-md-6
+                p
+                  strong Tên:
+                  |  #{user.fullName}
+              .col-md-6
+                p
+                  strong Email:
+                  |  #{user.email}
+            .row
+              .col-md-6
+                p
+                  strong Số điện thoại:
+                  |  #{user.phone}
+              .col-md-6
+                p
+                  strong Địa chỉ:
+                  |  #{user.address}
+
+       
+    .row
+      .col-md-12.text-center
+        a.btn.btn-secondary(href='/admin/my-account/edit') Chỉnh sửa

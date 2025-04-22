@@ -4,40 +4,44 @@ include ../../mixins/select-tree.pug
 
 block main
   +alert-error("5000")
-  h2.text-center.mb-4 Chỉnh sửa danh mục thú cưng 👻
-  form(action=`${prefixAdmin}/pets-category/edit/${data._id}?_method=PATCH` method="POST" class="container p-4 border rounded shadow-sm" enctype="multipart/form-data")
-    .mb-3
-      label.form-label(for="title") Tên danh mục :
-      input.form-control(type="text" name="title" required value=data.title placeholder="Nhập tên danh mục")
-    .mb-3
-      label.form-label(for="parent_id") Chọn danh mục cha
-      select.form-select(name="parent_id", id="parent_id")
-        option(value="") -- Chọn danh mục cha --
-        if categories
-          +select-tree(categories, 1, data.parent_id)
-    .mb-3
-      div(class="form-group" upload-image)
-        label.form-label(for="image") Ảnh sản phẩm (URL):
-        input.form-control(type="file" name="image" accept="image/*" upload-image-input)
-        if data.image
-          img(src=`${data.image}`, alt="" upload-image-preview style="width: 150px; margin-top: 10px;")
-        else
-          img(src="", alt="" upload-image-preview style="width: 150px; margin-top: 10px;")
-        button.btn.btn-danger.mt-2(type="button" upload-image-remove) Xóa ảnh
+  if (role.permissions.includes("products-category_edit"))
+  
+    h2.text-center.mb-4 Chỉnh sửa danh mục thú cưng 👻
+    form(action=`${prefixAdmin}/pets-category/edit/${data._id}?_method=PATCH` method="POST" class="container p-4 border rounded shadow-sm" enctype="multipart/form-data")
+      .mb-3
+        label.form-label(for="title") Tên danh mục :
+        input.form-control(type="text" name="title" required value=data.title placeholder="Nhập tên danh mục")
+      .mb-3
+        label.form-label(for="parent_id") Chọn danh mục cha
+        select.form-select(name="parent_id", id="parent_id")
+          option(value="") -- Chọn danh mục cha --
+          if categories
+            +select-tree(categories, 1, data.parent_id)
+      .mb-3
+        div(class="form-group" upload-image)
+          label.form-label(for="image") Ảnh sản phẩm (URL):
+          input.form-control(type="file" name="image" accept="image/*" upload-image-input)
+          if data.image
+            img(src=`${data.image}`, alt="" upload-image-preview style="width: 150px; margin-top: 10px;")
+          else
+            img(src="", alt="" upload-image-preview style="width: 150px; margin-top: 10px;")
+          button.btn.btn-danger.mt-2(type="button" upload-image-remove) Xóa ảnh
 
-    .mb-3
-      label.form-label(for="description") Mô tả :
-      textarea.form-control.textarea-mce(name="description") #{data.description}
-    .mb-3
-      label.form-label(for="status") Trạng thái:
-      select.form-control(name="status" required)
-        option(value="active" selected=(data.status === 'active') ? true : undefined) Hoạt động
-        option(value="inactive" selected=(data.status === 'inactive') ? true : undefined) Ngừng hoạt động
+      .mb-3
+        label.form-label(for="description") Mô tả :
+        textarea.form-control.textarea-mce(name="description") #{data.description}
+      .mb-3
+        label.form-label(for="status") Trạng thái:
+        select.form-control(name="status" required)
+          option(value="active" selected=(data.status === 'active') ? true : undefined) Hoạt động
+          option(value="inactive" selected=(data.status === 'inactive') ? true : undefined) Ngừng hoạt động
 
 
-    .mb-3
-      label.form-label(for="position") Vị trí:
-      input.form-control(type="number" name="position" value=data.position)
+      .mb-3
+        label.form-label(for="position") Vị trí:
+        input.form-control(type="number" name="position" value=data.position)
 
-    .d-flex.justify-content-end
-      button.btn.btn-success(type="submit") Cập nhật danh mục
+      .d-flex.justify-content-end
+        button.btn.btn-success(type="submit") Cập nhật danh mục
+  else 
+    p Bạn không có quyền truy cập 

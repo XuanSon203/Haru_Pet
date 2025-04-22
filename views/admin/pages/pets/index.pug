@@ -7,84 +7,89 @@ include ../../mixins/filter.pug
 block main
   +alert-success('5000')
   +alert-error('5000')
-  .container.mt-5
-    h1.text-center.mb-4 Manager Pets
-    a.btn.btn-success.m-2(href=`${prefixAdmin}/pets/create`) Thêm thú cưng
-    div.d-flex.justify-content-around.align-items-center.flex-wrap.gap-4.w-100.my-4
+  if (role.permissions.includes("products_view"))
+    .container.mt-5()
+        h1.text-center.mb-4 Manager Pets
+        if (role.permissions.includes("products_add"))
+            a.btn.btn-success.m-2(href=`${prefixAdmin}/pets/create`) Thêm thú cưng
 
-      //- Form 1: Chọn hành động (bên trái)
-      +change-multi()
+        div.d-flex.justify-content-around.align-items-center.flex-wrap.gap-4.w-100.my-4
 
-      //- Form 2: Tìm kiếm (ở giữa)
-      +search ()
+          if (role.permissions.includes("products_edit"))
+            //- Form 1: Chọn hành động (bên trái)
+            +change-multi()
 
-      //- Form 3: Chọn hành động (bên phải)
-      +filter()
+          //- Form 2: Tìm kiếm (ở giữa)
+          +search ()
 
-    table.table.table-bordered.table-striped.align-middle.text-center(checkbox-multi)
-      thead.table-dark
-        tr
-          th
-            input(type="checkbox", name="check-all" check-all )
-          th STT
-          th Tên
-          th Danh mục 
-          th Giới tính
-          th Hình ảnh
-          th Trạng thái
-          th Tình trạng sức khỏe
-          th Tuổi
-          th Giá
-          th Vị trí 
-          th Hành động
-      tbody
-      if(pets)
-        each item,index in pets
-          tr
-            td
-              input(type="checkbox", name="check-item" check-item value=item._id)
-            td #{index + 1}
-            td #{item.name}
-            td 
-              label.form-label(for="pet_category_id") Chọn danh mục cha
-              select.form-select(name="pet_category_id", id="pet_category_id" disabled)
-                option(value="") -- Chọn danh mục cha --
-                if categories
-                  +select-tree(categories, 1, item.pet_category_id)
-            td #{item.sex}
-            td
-              img(src= item.image, alt=item.name, width="80")
-            td
-              if item.status == "active"
-                a.btn.btn-primary(href="javascript:" btn-change-status data-status=item.status data-id =item._id) Đang bán
-              else
-                a.btn.btn-danger(href="javascript:" btn-change-status data-status=item.status data-id =item._id)  Không bán
+          //- Form 3: Chọn hành động (bên phải)
+          +filter()
 
-            td #{item.healthStatus}
-            td #{item.age}
-            td #{item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-            td 
-              input(type="number", name="position" value=item.position min="1")
-            td
-              a.btn.btn-sm.btn-outline-warning(href=`${prefixAdmin}/pets/detail/${item.id}`) Chi tiết
-              a.btn.btn-sm.btn-outline-warning(href=`${prefixAdmin}/pets/edit/${item.id}`) Sửa
-              |  
-              button.btn.btn-sm.btn-outline-danger(btn-delete-item data-id = item.id) Xóa
-      else
-        p
-          | Không có sản phẩm nào. Hãy 
-          a(href=`${prefixAdmin}/pets/create`) bấm vào đây
-          |  để thêm pet.
-    nav(aria-label='Page navigation example')
-      ul.pagination
-        if(pagination.currentPage>1)
-          li.page-item
-            button.page-link(button-pagination=pagination.currentPage-1) Previous
-        - for(let i = 1 ; i <= pagination.totalPage; i++)
-          li(class=`page-item ${pagination.currentPage === i ? "active" : ""}`)
-            button.page-link(button-pagination = i) #{i}
-        if(pagination.currentPage<pagination.totalPage)
-          li.page-item
-            button.page-link(button-pagination=pagination.currentPage+1) Next
-  form(action=`` data-path=`${prefixAdmin}/pets/delete` form-delete-item method="POST")
-  form(action=`` data-path=`${prefixAdmin}/pets/change-status` form-change-status-item method="POST")
+        table.table.table-bordered.table-striped.align-middle.text-center(checkbox-multi)
+          thead.table-dark
+            tr
+              th
+                input(type="checkbox", name="check-all" check-all )
+              th STT
+              th Tên
+              th Danh mục 
+              th Giới tính
+              th Hình ảnh
+              th Trạng thái
+              th Tình trạng sức khỏe
+              th Tuổi
+              th Giá
+              th Vị trí 
+              th Hành động
+          tbody
+          if(pets)
+            each item,index in pets
+              tr
+                td
+                  input(type="checkbox", name="check-item" check-item value=item._id)
+                td #{index + 1}
+                td #{item.name}
+                td 
+                  label.form-label(for="pet_category_id") Chọn danh mục cha
+                  select.form-select(name="pet_category_id", id="pet_category_id" disabled)
+                    option(value="") -- Chọn danh mục cha --
+                    if categories
+                      +select-tree(categories, 1, item.pet_category_id)
+                td #{item.sex}
+                td
+                  img(src= item.image, alt=item.name, width="80")
+                if (role.permissions.includes("products_edit"))
+                  td
+                    if item.status == "active"
+                      a.btn.btn-primary(href="javascript:" btn-change-status data-status=item.status data-id =item._id) Đang bán
+                    else
+                      a.btn.btn-danger(href="javascript:" btn-change-status data-status=item.status data-id =item._id)  Không bán
+                td #{item.healthStatus}
+                td #{item.age}
+                td #{item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                td 
+                  input(type="number", name="position" value=item.position min="1")
+                if (role.permissions.includes("products_edit"))
+                  td
+                    a.btn.btn-sm.btn-outline-warning(href=`${prefixAdmin}/pets/detail/${item.id}`) Chi tiết
+                    a.btn.btn-sm.btn-outline-warning(href=`${prefixAdmin}/pets/edit/${item.id}`) Sửa
+                    |  
+                    button.btn.btn-sm.btn-outline-danger(btn-delete-item data-id = item.id) Xóa
+          else
+            p
+              | Không có sản phẩm nào. Hãy 
+              a(href=`${prefixAdmin}/pets/create`) bấm vào đây
+              |  để thêm pet.
+        nav(aria-label='Page navigation example')
+          ul.pagination
+            if(pagination.currentPage>1)
+              li.page-item
+                button.page-link(button-pagination=pagination.currentPage-1) Previous
+            - for(let i = 1 ; i <= pagination.totalPage; i++)
+              li(class=`page-item ${pagination.currentPage === i ? "active" : ""}`)
+                button.page-link(button-pagination = i) #{i}
+            if(pagination.currentPage<pagination.totalPage)
+              li.page-item
+                button.page-link(button-pagination=pagination.currentPage+1) Next
+        form(action=`` data-path=`${prefixAdmin}/pets/delete` form-delete-item method="POST")
+        form(action=`` data-path=`${prefixAdmin}/pets/change-status` form-change-status-item method="POST")

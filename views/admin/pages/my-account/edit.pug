@@ -1,0 +1,40 @@
+extends ../../layout/default.pug
+include ../../mixins/alert.pug
+
+
+block main 
+  +alert-success("5000")
+  .container
+    .row
+         .card
+          .card-body
+            h4 Cập nhật thông tin tài khoản
+            form(action=`${prefixAdmin}/my-account/edit?_method=PATCH` method='POST' enctype="multipart/form-data" )
+              .form-group
+                label(for='fullName') Tên đầy đủ
+                input#fullName.form-control(type='text' name='fullName' value= user.fullName)
+              .form-group
+                label(for='email') Email
+                input#email.form-control(type='email' name='email' value= user.email)
+              .form-group
+                label(for='password') Mật khẩu 
+                input#password.form-control(type='password' name='password' value= user.password)
+              .form-group
+                label(for='phone') Số điện thoại
+                input#phone.form-control(type='text' name='phone' value= user.phone)
+              .form-group.d-flex.p-2
+                label(for='status') Trạng thái
+                .form-check.mx-4
+                  input#statusActive.form-check-input(type='radio' name='status' value='active' checked=(user.status == 'active'))
+                  label.form-check-label(for='statusActive') Hoạt động
+                .form-check
+                  input#statusInactive.form-check-input(type='radio' name='status' value='inactive' checked=(user.status == 'inactive'))
+                  label.form-check-label(for='statusInactive') Không hoạt động
+              .form-group.py-3
+                div( class="form-group" upload-image)
+                  label.form-label(for="avatar") Ảnh sản phẩm (URL):
+                  input.form-control(type="file" name="avatar" accept="image/*" upload-image-input)
+                  img(src="", alt="" upload-image-preview style=" width: 150px; margin-top: 10px;")
+                  button.btn.btn-danger.mt-2(type="button" upload-image-remove) Xóa ảnh
+
+              button.btn.btn-primary(type='submit') Cập nhật thông tin

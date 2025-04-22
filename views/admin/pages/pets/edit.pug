@@ -4,66 +4,69 @@ include ../../mixins/select-tree.pug
 block main
   +alert-success('5000')
   +alert-error('5000')
-  .container.mt-5
-    h2.mb-4 Chỉnh sửa thông tin Pet
+  if (role.permissions.includes("products_edit"))
+    .container.mt-5
+      h2.mb-4 Chỉnh sửa thông tin Pet
 
-    if(data)
-      form(method="POST", action=`${prefixAdmin}/pets/edit/${data.id}?_method=PATCH` enctype="multipart/form-data")
-        .mb-3
-          label.form-label Tên
-          input.form-control(type="text", name="name", value=data.name)
-        .mb-3
-          label.form-label(for="pet_category_id") Chọn danh mục cha
-          select.form-select(name="pet_category_id", id="pet_category_id")
-            option(value="") -- Chọn danh mục cha --
-            if categories
-              +select-tree(categories, 1, data.pet_category_id)
-        .mb-3
-          label.form-label Giới tính
-          select.form-select(name="sex")
-            option(value="Cái", selected=(data.sex === "Cái")) Cái
-            option(value="Đực", selected=(data.sex === "Đực")) Đực
-        .mb-3
-          label.form-label Ngày sinh
-          input.form-control(type="text", name="dateOfBirth", value= data.dateOfBirth.toLocaleDateString('vi-VN') disabled)
-        .mb-3
-        div( class="form-group" upload-image)
-          label.form-label(for="image") Ảnh sản phẩm (URL):
-          input.form-control(type="file" name="image" accept="image/*" upload-image-input, value= data.image)
-          img(src= data.image, alt="" upload-image-preview style=" width: 150px; margin-top: 10px;")
-          button.btn.btn-danger.mt-2(type="button" upload-image-remove) Xóa ảnh
+      if(data)
+        form(method="POST", action=`${prefixAdmin}/pets/edit/${data.id}?_method=PATCH` enctype="multipart/form-data")
+          .mb-3
+            label.form-label Tên
+            input.form-control(type="text", name="name", value=data.name)
+          .mb-3
+            label.form-label(for="pet_category_id") Chọn danh mục cha
+            select.form-select(name="pet_category_id", id="pet_category_id")
+              option(value="") -- Chọn danh mục cha --
+              if categories
+                +select-tree(categories, 1, data.pet_category_id)
+          .mb-3
+            label.form-label Giới tính
+            select.form-select(name="sex")
+              option(value="Cái", selected=(data.sex === "Cái")) Cái
+              option(value="Đực", selected=(data.sex === "Đực")) Đực
+          .mb-3
+            label.form-label Ngày sinh
+            input.form-control(type="text", name="dateOfBirth", value= data.dateOfBirth.toLocaleDateString('vi-VN') disabled)
+          .mb-3
+          div( class="form-group" upload-image)
+            label.form-label(for="image") Ảnh sản phẩm (URL):
+            input.form-control(type="file" name="image" accept="image/*" upload-image-input, value= data.image)
+            img(src= data.image, alt="" upload-image-preview style=" width: 150px; margin-top: 10px;")
+            button.btn.btn-danger.mt-2(type="button" upload-image-remove) Xóa ảnh
 
-        .mb-3
-          label.form-label Tình trạng sức khỏe
-          input.form-control(type="text", name="healthStatus",value= data.healthStatus)
-        .mb-3
-          label.form-label Giá
-          input.form-control(type="text", name="price",value= data.price)
-        .mb-3
-          label.form-label Giảm giá 
-          input.form-control(type="text", name="discount",value= data.discount)
+          .mb-3
+            label.form-label Tình trạng sức khỏe
+            input.form-control(type="text", name="healthStatus",value= data.healthStatus)
+          .mb-3
+            label.form-label Giá
+            input.form-control(type="text", name="price",value= data.price)
+          .mb-3
+            label.form-label Giảm giá 
+            input.form-control(type="text", name="discount",value= data.discount)
 
-        .mb-3
-          label.form-label Tuổi
-          input.form-control(type="text", name="age",value=data.age)
+          .mb-3
+            label.form-label Tuổi
+            input.form-control(type="text", name="age",value=data.age)
 
-        .mb-3
-          label.form-label Cân nặng
-          input.form-control(type="text", name="weight",value=data.weight )
+          .mb-3
+            label.form-label Cân nặng
+            input.form-control(type="text", name="weight",value=data.weight )
 
-        .mb-3
-          label.form-label Chiều cao
-          input.form-control(type="text", name="height",value=data.height)
+          .mb-3
+            label.form-label Chiều cao
+            input.form-control(type="text", name="height",value=data.height)
 
-        .mb-3
-          label.form-label Màu
-          input.form-control(type="text", name="color" , value=data.color)
+          .mb-3
+            label.form-label Màu
+            input.form-control(type="text", name="color" , value=data.color)
 
-        .mb-3
-          label.form-label Mô tả
-          textarea.form-control(name="description" ) !{data.description}
+          .mb-3
+            label.form-label Mô tả
+            textarea.form-control(name="description" ) !{data.description}
 
-        button.btn.btn-primary(type="submit") Lưu
-        a.btn.btn-secondary.ms-2(href=`${prefixAdmin}/pets`) Hủy
-    else
-      h1 Không tìm thất pet này
+          button.btn.btn-primary(type="submit") Lưu
+          a.btn.btn-secondary.ms-2(href=`${prefixAdmin}/pets`) Hủy
+      else
+        h1 Không tìm thất pet này
+  else
+    p Bạn không có quyền truy cập

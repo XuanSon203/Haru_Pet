@@ -5,43 +5,47 @@ include ../../mixins/search.pug
 include ../../mixins/change-multi.pug
 include ../../mixins/filter.pug
 block main
-  .container.mt-4
-    h1.mb-4 Danh Mục Thú Cưng
-    a.btn.btn-outline-primary.m-4(href=`${prefixAdmin}/pets-category/create`) Thêm danh mục 
-    div.d-flex.justify-content-around.align-items-center.flex-wrap.gap-4.w-100.my-4
-      //- Form 1: Chọn hành động (bên trái)
-      +change-multi-category
+  if (role.permissions.includes("products-category_view"))
+    .container.mt-4
+      h1.mb-4 Danh Mục Thú Cưng
+      if (role.permissions.includes("products-category_add"))
+        a.btn.btn-outline-primary.m-4(href=`${prefixAdmin}/pets-category/create`) Thêm danh mục 
+      div.d-flex.justify-content-around.align-items-center.flex-wrap.gap-4.w-100.my-4
+        //- Form 1: Chọn hành động (bên trái)
+        +change-multi-category
 
-        //- Form 2: Tìm kiếm (ở giữa)
-      +search ()
+          //- Form 2: Tìm kiếm (ở giữa)
+        +search ()
 
-        //- Form 3: Chọn hành động (bên phải)
-      +filterCategory()
-    table.table.table-bordered.table-hover.align-middle.text-center(checkbox-multi)
-      thead.table-dark
-        tr
-          th
-            input(type="checkbox", name="check-all" check-all)
-          th STT
-          th Tên danh mục
-          th Hình ảnh 
-          th Mô tả 
-          th Trạng thái
-          th Vị trí
-          th Hành động 
+          //- Form 3: Chọn hành động (bên phải)
+        +filterCategory()
+      table.table.table-bordered.table-hover.align-middle.text-center(checkbox-multi)
+        thead.table-dark
+          tr
+            th
+              input(type="checkbox", name="check-all" check-all)
+            th STT
+            th Tên danh mục
+            th Hình ảnh 
+            th Mô tả 
+            th Trạng thái
+            th Vị trí
+            th Hành động 
 
-      tbody
-        +table-tree(petCategory)
-  
-    nav(aria-label='Page navigation example')
-            ul.pagination
-              if(pagination.currentPage>1)
-                li.page-item
-                  button.page-link(button-pagination=pagination.currentPage-1) Previous
-              - for(let i = 1 ; i <= pagination.totalPage; i++)
-                li(class=`page-item ${pagination.currentPage === i ? "active" : ""}`)
-                  button.page-link(button-pagination = i) #{i}
-              if(pagination.currentPage<pagination.totalPage)
-                li.page-item
-                  button.page-link(button-pagination=pagination.currentPage+1) Next
-    form(action=`` data-path=`${prefixAdmin}/pets-category/change-status` form-change-status-item method="POST")
+        tbody
+          +table-tree(petCategory)
+    
+      nav(aria-label='Page navigation example')
+              ul.pagination
+                if(pagination.currentPage>1)
+                  li.page-item
+                    button.page-link(button-pagination=pagination.currentPage-1) Previous
+                - for(let i = 1 ; i <= pagination.totalPage; i++)
+                  li(class=`page-item ${pagination.currentPage === i ? "active" : ""}`)
+                    button.page-link(button-pagination = i) #{i}
+                if(pagination.currentPage<pagination.totalPage)
+                  li.page-item
+                    button.page-link(button-pagination=pagination.currentPage+1) Next
+      form(action=`` data-path=`${prefixAdmin}/pets-category/change-status` form-change-status-item method="POST")
+  else 
+    p Bạn không có quyền truy cập 

@@ -61,7 +61,6 @@ module.exports.index = async (req, res) => {
       .skip(objectPagination.skip);
     //  Lất ra danh muc của sản phẩm
     const petCategory = await PetCategory.find({ deleted: false });
-    console.log(petCategory);
     res.render("admin/pages/pets/index", {
       pets,
       search: objectSearch.search,
@@ -166,7 +165,6 @@ module.exports.deleteItem = async (req, res) => {
 // GET : Xử lý tìm kiếm pet theo tên
 module.exports.search = async (req, res) => {
   const query = req.params.query;
-  console.log(query);
   res.send("OK");
 };
 // PATCH: Thay đổ trạng thái pet từ active -> inactive tương ứng với đang bán -> không bán

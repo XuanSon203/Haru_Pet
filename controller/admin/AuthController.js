@@ -35,7 +35,7 @@ module.exports.loginPost = async (req, res) => {
     return;
   }
   res.cookie("token", user.token);
-  res.redirect(`${systemConfig.prefixAdmin}/dashboard`);
+  res.redirect(`${systemConfig.prefixAdmin}`);
 };
 module.exports.logout = async (req, res) => {
   //  Xoá token

@@ -1,16 +1,23 @@
 aside
-  .p-3
-    h5 Sidebar
-    ul.nav.flex-column
-      li.nav-item
-        a.nav-link.active(href=`${prefixAdmin}`) Dashboard
-      li.nav-item
-        a.nav-link(href=`${prefixAdmin}/pets`) Quản lý thú cưng
-      li.nav-item
-        a.nav-link(href=`${prefixAdmin}/pets-category`) Quản lý Danh Mục Thú Cưng 
-      li.nav-item
-        a.nav-link(href=`${prefixAdmin}/roles`) Quản lý Quyền 
-      li.nav-item
-        a.nav-link(href=`${prefixAdmin}/roles/permissions`) Quản Phân Quyền 
-      li.nav-item
-        a.nav-link(href=`${prefixAdmin}/accounts`) Quản lý tài khoản
+  if(role.permissions.length > 0)
+    .p-3
+      h5 Sidebar
+      ul.nav.flex-column
+        li.nav-item
+          a.nav-link.active(href=`${prefixAdmin}`) Dashboard
+        if (role.permissions.includes("products_view"))
+          li.nav-item
+            a.nav-link(href=`${prefixAdmin}/pets`) Quản lý thú cưng
+        if (role.permissions.includes("products-category_view"))
+          li.nav-item
+            a.nav-link(href=`${prefixAdmin}/pets-category`) Quản lý Danh Mục Thú Cưng
+        if(role.title == "Quản trị viên ")
+          li.nav-item
+            a.nav-link(href=`${prefixAdmin}/roles`) Quản lý Quyền
+          li.nav-item
+            a.nav-link(href=`${prefixAdmin}/roles/permissions`) Quản Phân Quyền
+          li.nav-item
+            a.nav-link(href=`${prefixAdmin}/accounts`) Quản lý tài khoản
+        li.nav-item
+          a.nav-link(href=`${prefixAdmin}/my-account`) #{user.fullName}
+          a.nav-link(href=`${prefixAdmin}/auth/logout`) Logout

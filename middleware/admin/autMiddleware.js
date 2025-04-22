@@ -1,6 +1,6 @@
 const systemConfig = require("../../config/system");
 const Account = require("../../model/AccountModel");
-const Role = require('../../model/AccountModel');
+const Role = require('../../model/RoleModel');
 module.exports.requireAuth = async (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
