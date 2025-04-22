@@ -2,6 +2,7 @@ extends ../../layout/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/search.pug
 include ../../mixins/change-multi.pug
+include ../../mixins/select-tree.pug
 include ../../mixins/filter.pug
 block main
   +alert-success('5000')
@@ -27,18 +28,14 @@ block main
             input(type="checkbox", name="check-all" check-all )
           th STT
           th Tên
+          th Danh mục 
           th Giới tính
-          th Ngày sinh
           th Hình ảnh
           th Trạng thái
           th Tình trạng sức khỏe
           th Tuổi
           th Giá
           th Vị trí 
-          th Cân nặng
-          th Chiều cao
-          th Màu
-          th Mô tả
           th Hành động
       tbody
       if(pets)
@@ -48,8 +45,13 @@ block main
               input(type="checkbox", name="check-item" check-item value=item._id)
             td #{index + 1}
             td #{item.name}
+            td 
+              label.form-label(for="pet_category_id") Chọn danh mục cha
+              select.form-select(name="pet_category_id", id="pet_category_id" disabled)
+                option(value="") -- Chọn danh mục cha --
+                if categories
+                  +select-tree(categories, 1, item.pet_category_id)
             td #{item.sex}
-            td #{item.dateOfBirth.toLocaleDateString('vi-VN')}
             td
               img(src= item.image, alt=item.name, width="80")
             td
@@ -60,14 +62,11 @@ block main
 
             td #{item.healthStatus}
             td #{item.age}
-            td #{item.price}
+            td #{item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
             td 
               input(type="number", name="position" value=item.position min="1")
-            td #{item.weight}
-            td #{item.height}
-            td #{item.color}
-            td #{item.description}
             td
+              a.btn.btn-sm.btn-outline-warning(href=`${prefixAdmin}/pets/detail/${item.id}`) Chi tiết
               a.btn.btn-sm.btn-outline-warning(href=`${prefixAdmin}/pets/edit/${item.id}`) Sửa
               |  
               button.btn.btn-sm.btn-outline-danger(btn-delete-item data-id = item.id) Xóa

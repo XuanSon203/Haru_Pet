@@ -8,22 +8,22 @@ module.exports.index = async (req, res) => {
   let find = {
     deleted: false,
   };
-  // Tìm kiếm 
+  // Tìm kiếm
   const objectSearch = searchHelper(req.query);
   if (objectSearch.regex) {
     find.title = objectSearch.regex;
   }
- // Phân trang
-    const countProducts = await PetCategory.countDocuments(find);
-    
-    let objectPagination = paginationHelper(
-      {
-        currentPage: 1,
-        limitItem: 4,
-      },
-      req.query,
-      countProducts
-    );
+  // Phân trang
+  const countProducts = await PetCategory.countDocuments(find);
+
+  let objectPagination = paginationHelper(
+    {
+      currentPage: 1,
+      limitItem: 4,
+    },
+    req.query,
+    countProducts
+  );
   // Lọc sắp xếp
   let sortOption = {};
   if (req.query.sort) {
@@ -93,7 +93,6 @@ module.exports.createPost = async (req, res) => {
   // Tạo sản phẩm mới
   try {
     const petCategory = new PetCategory(req.body);
-    console.log(petCategory);
     await petCategory.save();
     res.redirect(`${systemConfig.prefixAdmin}/pets-category`);
   } catch (error) {
@@ -235,4 +234,16 @@ module.exports.deleteItem = async (req, res) => {
     console.log(error);
     res.redirect(`${admin}/pets-category`);
   }
+};
+// GET :Chuyển hướng tới trang chi tiết danh mục sản phẩm
+module.exports.detail = async (req, res) => {
+  const id = req.params.id;
+  const category = await PetCategory.findOne({
+    _id: id,
+  });
+  const categories = await PetCategory.find({ deleted: false });
+  res.render("admin/pages/pets-category/detail", {
+    category,
+    categories,
+  });
 };

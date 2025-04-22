@@ -1,0 +1,50 @@
+extends ../../layout/default.pug
+include ../../mixins/alert.pug
+
+block main
+  .container.mt-5
+    h1.text-center.mb-4 Chỉnh Sửa Tài Khoản
+
+    +alert-success('3000')
+    +alert-error('3000')
+
+    form(method="POST", action=`${prefixAdmin}/accounts/edit/${account._id}?_method=PATCH`, enctype="multipart/form-data")
+      .mb-3
+        label.form-label(for="fullName") Họ và Tên
+        input.form-control(type="text", name="fullName", id="fullName", required, value=account.fullName)
+
+      .mb-3
+        label.form-label(for="email") Email
+        input.form-control(type="email", name="email", id="email", required, value=account.email)
+
+      .mb-3
+        label.form-label(for="phone") Số điện thoại
+        input.form-control(type="text", name="phone", id="phone", value=account.phone)
+
+      .mb-3
+        label.form-label(for="avatar") Ảnh đại diện
+        if account.avatar
+          br
+          div( class="form-group" upload-image)
+        label.form-label(for="avatar") Ảnh đại diện :
+        input.form-control(type="file" name="avatar" accept="avatar/*" upload-image-input)
+        img(src=account.avatar, alt="" upload-image-preview style=" width: 150px; margin-top: 10px;")
+        button.btn.btn-danger.mt-2(type="button" upload-image-remove) Xóa ảnh
+      .mb-3
+      label.form-label Quyền
+      select.form-select(name="role_id")
+        each role in roles
+          option(
+            value=role._id 
+            selected=(account.role_id && role._id.toString() === account.role_id.toString()) 
+          ) #{role.title}
+
+      .mb-3
+        label.form-label(for="status") Trạng thái
+        select.form-select(name="status", id="status")
+          option(value="active", selected=account.status === 'active') Kích hoạt
+          option(value="inactive", selected=account.status === 'inactive') Tạm khóa
+
+      .d-flex.justify-content-between.mt-4
+        a.btn.btn-secondary(href=`${prefixAdmin}/accounts`) Quay lại
+        button.btn.btn-primary(type="submit") Cập nhật

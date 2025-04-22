@@ -5,8 +5,7 @@ const Schema = mongoose.Schema;
 const petSchema = new Schema(
   {
     name: String,
-    // species_id: String,
-    // breed_id: String,
+    pet_category_id: { type: String, default: "" },
     sex: String,
     dateOfBirth: { type: Date },
     image: { type: String },
@@ -15,8 +14,8 @@ const petSchema = new Schema(
     deleted: { type: Boolean, default: false },
     age: { type: String, required: true },
     color: String,
-    price:Number,
-    discount:Number,
+    price: Number,
+    discount: Number,
     weight: Number,
     height: Number,
     position: Number,

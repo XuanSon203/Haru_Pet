@@ -2,6 +2,7 @@ const Pet = require("../../model/PetModel");
 const searchHelper = require("../../helper/search");
 const systemConfig = require("../../config/system");
 const paginationHelper = require("../../helper/pagination");
+const PetCategory = require("../../model/PetCategoryModel");
 const admin = systemConfig.prefixAdmin;
 // GET : lấy ra danh sách pet có trong trang web
 module.exports.index = async (req, res) => {
@@ -53,15 +54,19 @@ module.exports.index = async (req, res) => {
       sortOption = { position: "asc" };
     }
 
+    //
     const pets = await Pet.find(find)
       .sort(sortOption)
       .limit(objectPagination.limitItem)
       .skip(objectPagination.skip);
-
+    //  Lất ra danh muc của sản phẩm
+    const petCategory = await PetCategory.find({ deleted: false });
+    console.log(petCategory);
     res.render("admin/pages/pets/index", {
       pets,
       search: objectSearch.search,
       pagination: objectPagination,
+      categories: petCategory,
     });
   } catch (error) {
     console.log(error);
@@ -71,7 +76,11 @@ module.exports.index = async (req, res) => {
 };
 // GET : Chuyển hướng tới trang thêm pet
 module.exports.create = async (req, res) => {
-  res.render("admin/pages/pets/create");
+  const petCategory = await PetCategory.find({ deleted: false });
+
+  res.render("admin/pages/pets/create", {
+    categories: petCategory,
+  });
 };
 // Post : Xử lý các thông tin từ form gửi lên server và lưu vào database
 module.exports.createPost = async (req, res) => {
@@ -101,8 +110,10 @@ module.exports.createPost = async (req, res) => {
 module.exports.edit = async (req, res) => {
   try {
     const id = req.params.id;
+    const petCategory = await PetCategory.find({ deleted: false });
+
     const data = await Pet.findOne({ _id: id });
-    res.render("admin/pages/pets/edit", { data });
+    res.render("admin/pages/pets/edit", { data, categories: petCategory });
   } catch (error) {
     console.log(error);
     res.redirect("back");
@@ -225,4 +236,16 @@ module.exports.changeMulti = async (req, res) => {
     req.flash("error", "Đã xảy ra lỗi khi xử lý.");
     res.redirect(`${admin}/pets`);
   }
+};
+// GET: chuyên hướng tới trang chi tiết sản phẩm
+module.exports.detail = async (req, res) => {
+  const id = req.params.id;
+  const pet = await Pet.findOne({
+    _id: id,
+  });
+  const categories = await PetCategory.find({ deleted: false });
+  res.render("admin/pages/pets/detail", {
+    pet,
+    categories,
+  });
 };

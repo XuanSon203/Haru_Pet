@@ -1,0 +1,83 @@
+extends ../../layout/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
+block main
+  +alert-success('5000')
+  +alert-error('5000')
+
+  .container.mt-5
+    h1.text-center.mb-4 Chi tiết thú cưng
+
+    if pet
+      .card.mb-4
+        .row.g-0
+          .col-md-4
+            img.img-fluid.rounded-start(src=pet.image, alt=pet.name)
+          .col-md-8
+            .card-body
+              h3.card-title #{pet.name}
+              p.card-text
+                strong Danh mục: 
+                |  
+                if categories
+                  .mb-3
+                    label.form-label(for="pet_category_id") Chọn danh mục cha
+                    select.form-select(name="pet_category_id", id="pet_category_id" disabled)
+                      option(value="") -- Chọn danh mục cha --
+                      if categories
+                        +select-tree(categories, 1, pet.pet_category_id)
+
+              p.card-text
+                strong Giới tính: 
+                |  #{pet.sex}
+
+              p.card-text
+                strong Ngày sinh: 
+                |  #{pet.dateOfBirth.toLocaleDateString('vi-VN')}
+
+              p.card-text
+                strong Tuổi: 
+                |  #{pet.age}
+
+              p.card-text
+                strong Cân nặng: 
+                |  #{pet.weight} kg
+
+              p.card-text
+                strong Chiều cao: 
+                |  #{pet.height} cm
+
+              p.card-text
+                strong Màu sắc: 
+                |  #{pet.color}
+
+              p.card-text
+                strong Tình trạng sức khỏe: 
+                |  #{pet.healthStatus}
+
+              p.card-text
+                strong Giá: 
+                |  #{pet.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+
+              p.card-text
+                strong Vị trí hiển thị: 
+                |  #{pet.position}
+
+              p.card-text
+                strong Trạng thái:
+                if pet.status == "active"
+                  span.badge.bg-success.ml-2 Đang bán
+                else
+                  span.badge.bg-danger.ml-2 Không bán
+
+              p.card-text
+                strong Mô tả:
+                br
+                | #{pet.description}
+
+      a.btn.btn-secondary(href=`${prefixAdmin}/pets`) Quay lại danh sách
+
+    else
+      .alert.alert-warning Không tìm thấy thú cưng nào với ID tương ứng.
+

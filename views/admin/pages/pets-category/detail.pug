@@ -1,0 +1,51 @@
+extends ../../layout/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
+block main
+  +alert-success('5000')
+  +alert-error('5000')
+
+  .container.mt-4
+    h1.text-center.mb-4 Chi tiết danh mục thú cưng
+
+    if category
+      .card.mb-4.shadow
+        .row.g-0
+          .col-md-4
+            img.img-fluid.rounded-start(src=category.image, alt=category.name)
+          .col-md-8
+            .card-body
+              h3.card-title #{category.name}
+
+              p.card-text
+                strong Mô tả: 
+                br
+                | #{category.description || 'Không có mô tả'}
+
+              p.card-text
+                strong Vị trí hiển thị: 
+                | #{category.position}
+
+              p.card-text
+                strong Trạng thái: 
+                if category.status == "active"
+                  span.badge.bg-success.ml-2 Hiển thị
+                else
+                  span.badge.bg-secondary.ml-2 Ẩn
+
+              label.form-label(for="pet_category_id") Chọn danh mục cha
+                select.form-select(name="pet_category_id", id="pet_category_id" disabled)
+                  option(value="") -- Chọn danh mục cha --
+                  if categories
+                    +select-tree(categories, 1, category.parent_id)
+                  else
+                    p.card-text
+                      strong Danh mục cha: 
+                      span.text-muted Không có
+
+              .mt-4
+                a.btn.btn-secondary(href=`${prefixAdmin}/pets-category`) Quay lại danh sách
+                
+    else
+      .alert.alert-warning Không tìm thấy danh mục tương ứng.

@@ -1,0 +1,47 @@
+extends ../../layout/default.pug
+include ../../mixins/alert.pug
+
+block main
+  .container.mt-5
+    h1.text-center.mb-4 Tạo Tài Khoản Mới
+
+    +alert-success('3000')
+    +alert-error('3000')
+
+    form(method="POST", action=`${prefixAdmin}/accounts/create`, enctype="multipart/form-data")
+      .mb-3
+        label.form-label(for="fullName") Họ và tên
+        input.form-control(type="text", id="fullName", name="fullName", required)
+
+      .mb-3
+        label.form-label(for="email") Email
+        input.form-control(type="email", id="email", name="email", required)
+
+      .mb-3
+        label.form-label(for="password") Mật khẩu
+        input.form-control(type="password", id="password", name="password", required)
+
+      .mb-3
+        label.form-label(for="phone") Số điện thoại
+        input.form-control(type="text", id="phone", name="phone")
+
+      .mb-3
+      div( class="form-group" upload-image)
+        label.form-label(for="avatar") Ảnh đại diện :
+        input.form-control(type="file" name="avatar" accept="avatar/*" upload-image-input)
+        img(src="", alt="" upload-image-preview style=" width: 150px; margin-top: 10px;")
+        button.btn.btn-danger.mt-2(type="button" upload-image-remove) Xóa ảnh
+      .mb-3
+      label.form-label(for="role_id") Phân Quyền :
+      select.form-control(name="role_id")
+        option(value="" disabled selected) -- Chọn -- 
+        each item in roles
+          option(value=item.id) #{item.title}
+      .mb-3
+        label.form-label(for="status") Trạng thái
+        select.form-select(id="status", name="status")
+          option(value="active") Kích hoạt
+          option(value="inactive") Tạm khóa
+
+      button.btn.btn-success(type="submit") Tạo tài khoản
+      a.btn.btn-secondary.ms-2(href=`${prefixAdmin}/accounts`) Quay lại

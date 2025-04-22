@@ -1,0 +1,50 @@
+extends ../../layout/default.pug
+include ../../mixins/alert.pug
+
+block main 
+  +alert-error("5000")
+
+  .container.mt-4
+    .d-flex.justify-content-between.align-items-center.mb-3
+      h2.mb-0 Danh sách Vai Trò
+      a.btn.btn-success(href=`${prefixAdmin}/roles/create`)
+        i.bi.bi-plus-circle.me-1
+        | Thêm Vai Trò
+
+    .table-responsive
+      table.table.table-hover.table-bordered.align-middle
+        thead.table-dark
+          tr
+            th.text-center STT
+            th Tên Vai Trò
+            th Mô Tả
+            th Quyền Hạn
+            th Ngày Tạo
+            th.text-center Hành Động
+        tbody
+          if roles.length
+            each role, index in roles
+              tr
+                td.text-center #{index + 1}
+                td #{role.title}
+                td #{role.description || 'Không có'}
+                td
+                  if role.permissions && role.permissions.length
+                    ul.mb-0.ps-3
+                      each permission in role.permissions
+                        li.badge.bg-secondary.text-light.me-1.mb-1 #{permission}
+                  else
+                    span.text-muted Không có quyền
+                td #{role.createdAt.toLocaleString()}
+                td.text-center
+                  a.btn.btn-sm.btn-outline-info.me-1(href=`${prefixAdmin}/roles/detail/${role._id}`)
+                    i.bi.bi-eye-fill.me-1
+                    | Chi tiết
+                  a.btn.btn-sm.btn-outline-warning.me-1(href=`${prefixAdmin}/roles/edit/${role._id}`)
+                    i.bi.bi-pencil-square.me-1
+                    | Sửa
+                  button.btn.btn-sm.btn-outline-danger(btn-delete-item data-id = role.id) Xóa
+          else
+            tr
+              td(colspan="6").text-center.text-muted Không có vai trò nào
+      form(action=`` data-path=`${prefixAdmin}/roles/delete` form-delete-item method="POST")

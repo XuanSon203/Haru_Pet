@@ -1,0 +1,196 @@
+extends ../../layout/default.pug
+include ../../mixins/alert.pug
+
+block main
+  +alert-success(5000)
+  +alert-error(5000)
+
+  .container.mt-4
+    h1.text-center.text-primary Phân Quyền
+    if (records)
+      div(data-records=records)
+      form#form-change-permissions(method="POST", action=`${prefixAdmin}/roles/permissions?_method=PATCH`)
+        input(type="text" name="permissions" hidden)
+
+        .table-responsive
+          table.table.table-bordered.text-center.align-middle#table-permissions
+          
+            button.btn.btn-outline-primary.m-4(type="submit" btn-submit) Cập nhật
+            thead.table-light
+              tr
+                th Tính năng
+                each item in records
+                  th #{item.title}
+
+            tbody
+              tr.d-none(data-name="id")
+                td
+                each item in records
+                  td
+                    input.form-control(type="hidden", value=item.id)
+                //- Phân quyền cho Danh Mục Sản phẩm 
+              tr.table-secondary
+                td(colspan=records.length + 1).fw-bold.text-start Danh mục sản phẩm
+
+              tr(data-name="products-category_view")
+                td Xem
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="products-category_add")
+                td Thêm mới
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="products-category_edit")
+                td Chỉnh sửa
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="products-category_delete")
+                td Xóa
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+              //- Phân quyền cho Sản phẩm 
+              tr.table-secondary
+                td(colspan=records.length + 1).fw-bold.text-start Sản phẩm
+
+              tr(data-name="products_view")
+                td Xem
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="products_add")
+                td Thêm mới
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="products_edit")
+                td Chỉnh sửa
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="products_delete")
+                td Xóa
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+             
+              //- Phân quyền cho Blog
+              tr.table-secondary
+                td(colspan=records.length + 1).fw-bold.text-start Bài viết 
+
+              tr(data-name="blog_view")
+                td Xem
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="blog_add")
+                td Thêm mới
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="blog_edit")
+                td Chỉnh sửa
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="blog_delete")
+                td Xóa
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+             
+              //- Phân quyền cho Oder
+              tr.table-secondary
+                td(colspan=records.length + 1).fw-bold.text-start Đơn hàng 
+
+              tr(data-name="order_view")
+                td Xem
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="order_add")
+                td Thêm mới
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="order_edit")
+                td Chỉnh sửa
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="order_delete")
+                td Xóa
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+             
+              //- Phân quyền cho User
+              tr.table-secondary
+                td(colspan=records.length + 1).fw-bold.text-start Người dùng 
+
+              tr(data-name="user_view")
+                td Xem
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="user_add")
+                td Thêm mới
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="user_edit")
+                td Chỉnh sửa
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+
+              tr(data-name="user_delete")
+                td Xóa
+                each item in records
+                  td
+                    div.form-check
+                      input.form-check-input(type="checkbox")
+             
+       
+    else
+      .alert.alert-warning.text-center
+        | Chưa có vai trò nào. 
+        a(href="/admin/roles/create").text-decoration-underline Tạo mới
+
+  script(src="/admin/js/roles.js")

@@ -1,0 +1,18 @@
+extends ../../layout/default.pug
+include ../../mixins/alert.pug
+
+block main
+  +alert-error("5000")
+  h2.text-center.mb-4 Thêm mới vai trò
+
+  form(action=`${prefixAdmin}/roles/create` method="POST" class="container p-4 border rounded shadow-sm")
+    .mb-3
+      label.form-label(for="title") Tên vai trò:
+      input.form-control(type="text" name="title" required placeholder="Nhập tên vai trò")
+
+    .mb-3
+      label.form-label(for="description") Mô tả:
+      textarea.form-control(name="description" rows="3" placeholder="Mô tả vai trò")
+
+    .d-flex.justify-content-end
+      button.btn.btn-success(type="submit") Thêm vai trò

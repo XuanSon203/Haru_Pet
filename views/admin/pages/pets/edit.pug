@@ -1,5 +1,6 @@
 extends ../../layout/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 block main
   +alert-success('5000')
   +alert-error('5000')
@@ -11,6 +12,12 @@ block main
         .mb-3
           label.form-label Tên
           input.form-control(type="text", name="name", value=data.name)
+        .mb-3
+          label.form-label(for="pet_category_id") Chọn danh mục cha
+          select.form-select(name="pet_category_id", id="pet_category_id")
+            option(value="") -- Chọn danh mục cha --
+            if categories
+              +select-tree(categories, 1, data.pet_category_id)
         .mb-3
           label.form-label Giới tính
           select.form-select(name="sex")
