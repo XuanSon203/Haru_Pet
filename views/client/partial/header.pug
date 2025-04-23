@@ -1,0 +1,42 @@
+nav.navbar.navbar-expand-lg.bg-body-tertiary
+  .container
+    a.navbar-brand(href='#') 🐶 Dogs Care
+    button.navbar-toggler(type='button', data-bs-toggle='collapse', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+      span.navbar-toggler-icon
+
+    .collapse.navbar-collapse.justify-content-around
+      form.d-flex(role='search')
+        input.form-control.me-2(type='search', placeholder='Enter keyword', aria-label='Search')
+        button.btn.btn-outline-danger(type='submit') Search
+          i.bi.bi-search
+
+      ul.navbar-nav.mb-2.mb-lg-0
+        li.nav-item
+          a.nav-link.active(href='/') Home
+        li.nav-item
+          a.nav-link(href='/about') About Us
+        li.nav-item
+          a.nav-link(href='/service') Services
+        li.nav-item.dropdown
+          a.nav-link.dropdown-toggle(href='#', role='button', data-bs-toggle='dropdown', aria-expanded='false') Pages
+          ul.dropdown-menu
+            li
+              a.dropdown-item(href='/products') Pets
+            li
+              a.dropdown-item(href='#') Testimonials
+        li.nav-item
+          a.nav-link(href='/contact') Contact Us
+      ul.navbar-nav.mb-2.mb-lg-0
+        li.nav-item
+          a.nav-link(href='/cart') Cart (#{miniCart ? miniCart.totalQuantity : 0})
+        if(user)
+        
+          li.nav-item
+            a.nav-link(href="/user/info") #{user.fullName}
+          li.nav-item
+            a.nav-link(href="/user/logout") Logout
+        else
+          li.nav-item
+            a.nav-link(href="/user/register") Register
+          li.nav-item
+            a.nav-link(href="/user/login") Login

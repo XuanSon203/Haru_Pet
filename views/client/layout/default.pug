@@ -1,0 +1,20 @@
+doctype html
+html(lang="vi")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title #{title || 'Trang khách'}
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/css/style.css")
+    //- bạn có thể thêm bootstrap hoặc tailwind ở đây nếu muốn
+
+  body
+    include ../partial/header.pug
+
+    block content
+
+    include ../partial/footer.pug
+
+    //- JS script nếu có
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js")
+    script(src="/js/scripts.js")

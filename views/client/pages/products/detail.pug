@@ -1,0 +1,36 @@
+extends ../../layout/default.pug
+
+block content
+  h2.text-center.mb-4 Chi Tiết Sản Phẩm
+
+  .container.p-5
+    .card
+      .card-header.bg-info.text-white
+        h4 Thông tin sản phẩm
+
+      .card-body
+        .row
+          .col-md-6
+            .mb-3
+              label.form-label Tiêu đề sản phẩm:
+              p.form-control-plaintext= data.name
+          
+          .col-md-6
+            .mb-3
+              label.form-label Giá sản phẩm:
+              p.form-control-plaintext #{data.price.toLocaleString ? data.price.toLocaleString() : data.price} VND
+
+        .mb-3
+          label.form-label Ảnh sản phẩm:
+          img.img-fluid.rounded(style="max-width: 300px;" src=data.image alt="Ảnh sản phẩm")
+        
+        
+
+    .d-flex.justify-content-between.mt-4
+      // Nút thêm vào giỏ hàng
+      form(action=`/cart/add/${data._id}`, method="POST")
+        input.form-control.m-2(type="number" name="quantity" value="1" min="1")
+        button.btn.btn-success(type="submit") Thêm vào giỏ hàng
+
+      // Nút quay lại
+      a.btn.btn-outline-primary(href="/products") Quay lại danh sách sản phẩm

@@ -20,6 +20,7 @@ const petSchema = new Schema(
     height: Number,
     position: Number,
     status: { type: String, default: "active" },
+    slug: { type: String, slug: "name", unique: true },
   },
   {
     timestamps: true,

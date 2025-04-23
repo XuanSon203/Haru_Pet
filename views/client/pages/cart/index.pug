@@ -1,0 +1,52 @@
+extends ../../layout/default.pug
+
+block content
+  .container.mt-5
+    h2.mb-4 Giỏ hàng của bạn
+
+    table.table.table-bordered.table-hover
+      thead
+        tr
+          th STT
+          th Ảnh
+          th Tên
+          th Giá
+          th Số lượng
+          th Tổng tiền
+          th Hành động
+      tbody
+        if cart.products.length > 0
+          each item, index in cart.products
+            
+            tr
+              td= index + 1
+              
+              // Ảnh sản phẩm
+              td
+                if item.productInfo && item.productInfo.image
+                  img(src=item.productInfo.image, alt=item.productInfo.name, width="80")
+
+              // Tên sản phẩm
+              td= item.productInfo ? item.productInfo.name : 'Không có'
+
+              // Giá sau giảm
+              td= item.productInfo ? (item.productInfo.price * (100 - item.productInfo.discount) / 100).toLocaleString() + " đ" : ''
+
+              // Số lượng
+              td
+                form(action="#", method="post")
+                  input(type="number", name="quantity", value=item.quantity, min="1", product_id=item.product_id  class="form-control", style="width: 80px; display: inline-block;")
+
+              // Tổng tiền mỗi sản phẩm
+              td= item.totalPrice ? item.totalPrice.toLocaleString() + " đ" : '0 đ'
+
+              td
+                a.btn.btn-sm.btn-danger(href=`/cart/delete/${item.product_id}`) Xóa
+        else 
+          tr
+            td(colspan="7") Không có sản phẩm nào trong giỏ hàng
+
+    .text-end.mt-3
+      h4 Tổng cộng:
+        span.text-danger.ms-2 #{cart.totalPrice } đ
+      a.btn.btn-success.mt-2(href="./checkout") Thanh toán

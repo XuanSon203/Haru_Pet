@@ -96,7 +96,7 @@ module.exports.createPost = async (req, res) => {
     }
 
     const pet = new Pet(req.body);
-    pet.save();
+    await pet.save();
     req.flash("success", "Thêm pet thành công");
     res.redirect(`${admin}`);
   } catch (error) {
@@ -134,7 +134,6 @@ module.exports.editPatch = async (req, res) => {
     );
     if (result === 200) {
       req.flash("success", "Thông tin đã được cập nhật thành công ");
-      res.redirect(`${admin}/pets`);
     }
     res.redirect(`${admin}/pets`);
   } catch (error) {
